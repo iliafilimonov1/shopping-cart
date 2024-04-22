@@ -1,7 +1,7 @@
 /**
  * Компонент степпер.
  */
-const stepper = () => {
+export const stepper = () => {
   // Получаем элементы компонента
   const counterInput = document.querySelector('.counter__input')
   const counterBtnUp = document.querySelector('.counter__btn--up')
@@ -43,5 +43,3 @@ const stepper = () => {
   // Инициализируем состояние кнопок при загрузке страницы
   updateButtonState()
 }
-
-stepper()
