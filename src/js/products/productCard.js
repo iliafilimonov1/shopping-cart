@@ -1,5 +1,6 @@
-import { productList } from '../selectors/selectors.js'
+// import { productList } from '../selectors/selectors.js'
 import { addProductToBasket } from './productService'
+import { stepper } from '../components/stepper'
 
 /**
  * Функция для генерации HTML-кода карточки товара
@@ -10,9 +11,10 @@ import { addProductToBasket } from './productService'
  * @param {string} product.price - Цена товара
  * @param {string} product.imgSrc - Ссылка на изображение товара
  * @param {string} product.category - Категория товара
+ * @param {HTMLElement} parentNode - Родительский узел для вставки карточки
  */
-export const generateProductCardHTML = (product) => {
-  if (productList) {
+export const generateProductCardHTML = (product, parentNode) => {
+  if (parentNode) {
     const cardHTML = `
     <div class="main-card" data-id="${product?.id}">
       <div class="card-image">
@@ -34,11 +36,41 @@ export const generateProductCardHTML = (product) => {
       <h3 class="card-name">${product?.name}</h3>
       <p class="card-category">${product?.category}</p>
       <p class="card-price">${product?.price}</p>
+      <!-- Компонент степпер  -->
+      <div class="counter">
+        <label class="counter__field">
+          <input class="counter__input" type="text" value="1" maxlength="3" readonly autocomplete="off" />
+          <span class="counter__text">шт</span>
+        </label>
+        <div class="counter__btns">
+          <button class="counter__btn counter__btn--up" aria-label="Увеличить количество">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="5" viewBox="0 0 8 5">
+              <g>
+                <g>
+                  <path d="M3.904-.035L-.003 3.151 1.02 5.03l2.988-2.387 2.988 2.387 1.022-1.88-3.89-3.186z"></path>
+                </g>
+              </g>
+            </svg>
+          </button>
+          <button disabled class="counter__btn counter__btn--down" aria-label="Уменьшить количество">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="5" viewBox="0 0 8 5">
+              <g>
+                <g>
+                  <path d="M3.904 5.003L-.003 1.818 1.02-.062l2.988 2.386L6.995-.063l1.022 1.88-3.89 3.186z"></path>
+                </g>
+              </g>
+            </svg>
+          </button>
+        </div>
+      </div>
       <button class="btn btn-primary">Add to cart</button>
     </div>
   `
-    // Вставка шаблона
-    productList.insertAdjacentHTML('beforeend', cardHTML)
+    // Вставка шаблона в нужный родитель
+    parentNode.insertAdjacentHTML('beforeend', cardHTML)
+
+    // Инициализация степпера
+    // stepper()
 
     // Получение всех кнопок
     const addProductToBasketBtns = document.querySelectorAll('.btn-primary')
